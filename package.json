@@ -1,23 +1,23 @@
 {
-  "name": "draft",
-  "description": "For chosing movies for a movie draft",
-  "version": "0.0.0",
+  "name": "movie-draft",
+  "description": "Build a roster of upcoming films and compete for the highest gross earnings.",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "async": "^2.0.0-rc.1",
-    "aws-sdk": "^2.3.3",
-    "body-parser": "~1.13.2",
-    "cookie-parser": "~1.3.5",
-    "debug": "~2.2.0",
-    "express": "~4.13.1",
-    "jade": "~1.11.0",
-    "morgan": "~1.6.1",
+    "async": "^2.6.3",
+    "aws-sdk": "^2.556.0",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "debug": "^4.1.1",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
     "nedb": "^1.8.0",
+    "pg": "^7.12.1",
     "prompt": "^1.0.0",
-    "serve-favicon": "~2.3.0",
-    "sprintf": "^0.1.5"
+    "pug": "^2.0.4",
+    "serve-favicon": "^2.5.0"
   }
 }
