@@ -40,10 +40,10 @@ block content
                             if c_date >= draft.draft_start && c_date <= draft.draft_end
                                 h3 Finalize Price
                                 form#set_price_form
-                                    input(type="hidden", name="movie_id", value="#{movie._id}")
-                                    input(type="hidden", name="team_id", value="#{team._id}")
-                                    input(type="hidden", name="movie_number", value="#{movie.order}")
-                                    input(type="hidden", name="final_movie", value="#{final_movie}")
+                                    input(type="hidden", name="movie_id", value=movie._id)
+                                    input(type="hidden", name="team_id", value=team._id)
+                                    input(type="hidden", name="movie_number", value=movie.order)
+                                    input(type="hidden", name="final_movie", value=final_movie)
                                     label(for="winner") Winner
                                     select(id="set_price_form_winner", name="winner")
                                         option(value="", disabled, selected)
@@ -66,16 +66,16 @@ block content
                         ul
                             li Release Date: #{prettyDate(movie.release_date)}
                             li
-                                a(href='http://www.boxofficemojo.com/movies/?id=#{movie.bom_id}' target='_blank') Box Office Mojo
-                            li 
-                                a(href='http://www.imdb.com/title/#{movie.imdb_id}/' target='_blank') IMDB
+                                a(href="http://www.boxofficemojo.com/title/" + movie.imdb_id + "/" target='_blank') Box Office Mojo
+                            li
+                                a(href="http://www.imdb.com/title/" + movie.imdb_id + "/" target='_blank') IMDB
                     div#members
                         h3 Overall Stats
-                        include member_movie_stats.jade
+                        include member_movie_stats.pug
 
                         if team.draft_position > movie_number
                             p
-                                a(href="/draft/#{team._id}/#{next_movie}/") Next Movie
+                                a(href="/draft/" + team._id + "/" + next_movie + "/") Next Movie
 
 
 

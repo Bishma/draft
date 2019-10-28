@@ -6,7 +6,7 @@ var prompt = require('prompt');
 var schema = {
     properties: {
         season: {
-            description: "Season (Summer/Winter)",
+            description: "Season (summer/winter)",
             pattern: /^(summer|winter)$/i,
             message: '"summer" or "winter"',
             required: true,
@@ -62,7 +62,7 @@ prompt.get(schema, function(err,result) {
 
         // check to see if there's aleady a draft for this season and year
         if (docs.length != 0) {
-            console.log("There is already a draft for this season and year. Overwrite (and lose movie list) (y/N)");
+            console.log("There is already a draft for this season and year. Overwrite (and lose movie list)? (Y/N)");
 
             // prompt to see if we should overwrite the existing season information
             prompt.get(['overwrite'], function (err,ynresp) {
@@ -70,12 +70,14 @@ prompt.get(schema, function(err,result) {
 
                 // if we got a yes prompt then add the ID we found so the DB knows to replace instead of add new
                 if (ynresp.overwrite === 'y' || ynresp.overwrite === 'Y') {
-                    result['_id'] = docs['_id'];
-                    db.insert(result,function(err,resp) {
-                        if (err) { console.log("Unable to get insert new draft",err); process.exit(1); };
-        
-                        console.log("Draft replaced. God speed. You'll need it.");
-                    });
+					db.remove({season:result.season,year:result.year},{multi:true},function(err,numRemoved) {
+						if (err || !numRemoved) {console.log("Unable to remove old draft",err?err:"");process.exit(1);}
+						db.persistence.compactDatafile();
+						db.insert(result,function(err,resp) {
+							if (err) {console.log("Unable to get insert new draft",err);process.exit(1);}
+						});
+					});
+					console.log("Draft replaced. God speed. You'll need it.");
                 } else {
                     // if we got something other than a yes response then we stop insertion
                     console.log("Draft creation halted.");

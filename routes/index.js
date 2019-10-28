@@ -11,13 +11,11 @@ db.value = new Datastore({ filename: 'data/value.nedb', autoload: true });
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    var current_info = helpers.currentDraft();
-    if (typeof current_info == 'object') {
-        var selection_draft = current_info;
-    }
+    var selection_draft = helpers.currentDraft();
 
     db['movie'].find( selection_draft ).sort({ release_date: 1 }).exec( function(err, movie_docs) {
         if (err) { console.log("Unable to get movie documents",err); process.exit(1); };
+        console.log(movie_docs);
 
         // get the draft details as well
         db['draft'].findOne( selection_draft ).exec(function(err, draft_doc) {
@@ -65,10 +63,11 @@ router.get('/team/' + ':id', function(req, res, next) {
 
                             if (team_doc.member[i].hasOwnProperty('movies')) {
                                 for (var j = 0; j < team_doc.member[i].movies.length; j++) {
+                                    console.log(team_doc.member[i].movies);
                                     for (var k = 0; k < movie_docs.length; k++) {
                                         if (movie_docs[k]._id == team_doc.member[i].movies[j].movie_id) {
                                             if (movie_docs[k].hasOwnProperty('last_gross')) {
-                                                team_doc.member[i].total_gross += parseInt(movie_docs[k].last_gross);
+                                                team_doc.member[i].total_gross += parseInt(movie_docs[k].last_gross * (team_doc.member[i].movies[j].percent / 100));
                                             }
                                         }
                                     }
@@ -173,7 +172,7 @@ router.post('/draft', function(req, res, next) {
     });
 });
 
-// this is a seqential route used for drafting
+// this is a sequential route used for drafting
 router.get('/draft/' + ':team_id' + '/' + ':movie_number', function(req, res, next) {
     var info = req.params.team_id.split('-');
     var draft_season = info[0];
@@ -227,10 +226,7 @@ router.get('/draft/' + ':team_id' + '/' + ':movie_number', function(req, res, ne
 
 // team addtions page
 router.get('/add_team', function(req, res, next) {
-    var current_draft = helpers.currentDraft();
-    if (typeof current_draft == 'object') {
-        var selection_draft = current_draft;
-    }
+    var selection_draft = helpers.currentDraft();
 
     // create a bool to decide if required fields should be highlighted
     if (req.query.hasOwnProperty("required")) {
@@ -291,7 +287,7 @@ router.post('/add_team', function(req, res, next) {
                 callback(err,null);
             }
             else if (count !== 0) {
-                callback("team name already exits",null);
+                callback("Team name already exists", null);
             }
             else {
                 callback(null,body);
@@ -320,9 +316,9 @@ router.post('/add_team', function(req, res, next) {
         body.draft_complete = false;
 
         db['team'].insert(body, function(err) {
-            if (err) { callback("Unable to insert into team db. "+err,null); process.exit(1); }
+            if (err) { callback("Unable to insert team into database. " + err, null); process.exit(1); }
         });
-            
+
         callback(null,body);
     }
 });

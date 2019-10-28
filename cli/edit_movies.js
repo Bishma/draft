@@ -9,7 +9,7 @@ var helpers = require("../modules/helpers.js");
 var draft_schema = {
     properties: {
         season: {
-            description: "Season (Summer/Winter)",
+            description: "Season (summer/winter)",
             pattern: /^(summer|winter)$/i,
             message: '"summer" or "winter"',
             required: true,
@@ -62,21 +62,21 @@ prompt.get(draft_schema, function(err,draft) {
                             default: movie.release_date
                         },
                         bom_id: {
-                            description: "BoxOfficeMojo ID",
+                            description: "Box Office Mojo ID",
                             pattern: /.+\.htm$/,
                             message: "BOM IDs end in .htm",
                             required: true,
                             default: movie.bom_id
                         },
                         imdb_id: {
-                            description: "IMDB ID",
+                            description: "IMDb ID",
                             pattern: /^tt/,
-                            message: "IMDB IDs start with tt",
+                            message: "IMDb IDs start with tt",
                             required: true,
                             default: movie.imdb_id
                         },
                         yt_id: {
-                            description: "Youtube trailer ID",
+                            description: "YouTube trailer ID",
                             required: true,
                             default: movie.yt_id
                         },
@@ -116,7 +116,7 @@ prompt.get(draft_schema, function(err,draft) {
 
                     // once removal is done add the edited movies back in
                     db.insert(edited_movies, function(err) {
-                        if (err) { console.log("Unable to insert into draft db",err); process.exit(1); };
+                        if (err) { console.log("Unable to insert edited movies into draft database. ",err); process.exit(1); };
 
                         console.log("Movies edited and readded to draft.");
                     });

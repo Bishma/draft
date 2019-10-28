@@ -9,7 +9,7 @@ var helpers = require("../modules/helpers");
 var draft_schema = {
     properties: {
         season: {
-            description: "Season (Summer/Winter)",
+            description: "Season (summer/winter)",
             pattern: /^(summer|winter)$/i,
             message: '"summer" or "winter"',
             required: true,
@@ -39,15 +39,15 @@ var movie_schema = {
             required: true
         },
         bom_id: {
-            description: "BoxOfficeMojo ID",
+            description: "Box Office Mojo ID",
             pattern: /.+\.htm$/,
             message: "BOM IDs end in .htm",
             required: true
         },
         imdb_id: {
-            description: "IMDB ID",
+            description: "IMDb ID",
             pattern: /^tt/,
-            message: "IMDB IDs start with tt",
+            message: "IMDb IDs start with tt",
             required: true
         },
         poster_url: {
@@ -55,11 +55,11 @@ var movie_schema = {
             required: true
         },
         yt_id: {
-            description: "Youtube trailer ID",
+            description: "YouTube trailer ID",
             required: true
         },
         done: {
-            description: "Finished (y/N)",
+            description: "Finished with draft? (Y/N)",
         }
     }
 }
@@ -67,7 +67,7 @@ var movie_schema = {
 prompt.start();
 
 console.log("This will add the movies to an existing draft.");
-console.log("This will overwrite any existing movie list on thedraft.");
+console.log("This will overwrite any existing movie list on the draft.");
 
 // an array to hold all the movies as we loop though prompts
 var movies = [];
@@ -131,7 +131,7 @@ prompt.get(draft_schema, function(err,draft) {
             console.log(movies);
 
             db.insert(movies, function(err) {
-                if (err) { console.log("Unable to insert into draft db",err); process.exit(1); };
+                if (err) { console.log("Unable to insert movies into draft database: ",err); process.exit(1); };
 
                 console.log("Movies added to draft.");
             });

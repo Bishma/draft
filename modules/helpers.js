@@ -7,7 +7,7 @@ helpers.currentDate = function() {
 
 // get the current draft
 helpers.currentDraft = function() {
-    return { season: "summer", year: "2018" };
+    return { season: "winter", year: "2019" };
 }
 
 // take an array, make them id/url friendly, then concat with a hyphen

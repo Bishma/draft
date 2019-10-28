@@ -5,7 +5,7 @@ block content
     div#body_container
         div#body_left
             h2 Movies
-            include movie_table.jade
+            include movie_table.pug
         div#body_right
             div#team_list
                 h2 Teams
@@ -20,22 +20,22 @@ block content
                         each team in teams
                             tr
                                 td
-                                    a(href="/team/#{team._id}") #{team.team_name}
+                                    a(href="/team/" + team._id) #{team.team_name}
                                 td #{team.member.length}
                                 if team.draft_complete === false
                                     if c_date >= current_draft.draft_start && c_date <= current_draft.draft_end 
                                         if team.draft_position == 0
                                             td
-                                                a(href="/draft/#{team._id}/0/") Not Started
+                                                a(href="/draft/" + team._id + "/0/") Not Started
                                         else
                                             td
-                                                a(href="/draft/#{team._id}/#{team.draft_position}/") Incomplete
+                                                a(href="/draft/" + team._id + "/" + team.draft_position + "/") Incomplete
                                     else
                                         td Incomplete
                                 else
                                         if c_date > current_draft.draft_end 
                                             td
-                                                a(href="/draft/#{team._id}/0/") Draft Complete
+                                                a(href="/draft/" + team._id + "/0/") Draft Complete
                                         else
                                             td Draft Complete
                                 td None

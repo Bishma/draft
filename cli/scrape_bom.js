@@ -8,7 +8,7 @@ db.draft = new Datastore({ filename: '../data/draft.nedb', autoload: true })
 db.movie = new Datastore({ filename: '../data/movie.nedb', autoload: true });
 db.value = new Datastore({ filename: '../data/value.nedb', autoload: true });
 
-var current_draft = helpers.currentDraft(); 
+var current_draft = helpers.currentDraft();
 var current_date = helpers.currentDate();
 
 db['movie'].find(current_draft, function(err,movies) {
@@ -50,12 +50,12 @@ db['movie'].find(current_draft, function(err,movies) {
                 console.log("\t"+seconds+"ms delay");
 
                 setTimeout(function() {
-                    //set the unique path for this movie
-                    var movie_path = '/movies/?id=' + movie.bom_id;
+					//set the unique path for this movie
+					var movie_path = '/title/' + movie.imdb_id + '/';
 
                     // set the options for the get request
                     var options = {
-                        host: 'www.boxofficemojo.com',
+                        host: 'www.imdb.com',
                         headers: {'user-agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'},
                         path: movie_path
                     }
@@ -67,8 +67,8 @@ db['movie'].find(current_draft, function(err,movies) {
 
                             for (var k = 0; k < lines.length; k++) {
                                 (function (movie) {
-                                    if (typeof lines[k] == "string" && lines[k].match(/domestic total as of/i)) {
-                                        var gross = lines[k].replace(/^.+domestic total as of.+?\$([0-9,]+).+$/i,"$1");
+                                    if (typeof lines[k] == "string" && lines[k].match(/.*Gross USA.*/)) {
+                                        var gross = lines[k].replace(/^.*Gross USA.+?\$([0-9,]+).+$/i,"$1");
                                         gross = gross.replace(/\D/g,'');
                                         console.log(movie.name+' gross: '+gross);
 

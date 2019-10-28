@@ -18,7 +18,7 @@ block movie_table
                     th Gross
         tbody
             each movie in movies
-                if found == true
+                if found == true && winner_info[movie._id]
                     - var adj_gross = movie.last_gross * (winner_info[movie._id].percent / 100)
                 else
                     - var adj_gross = movie.last_gross
@@ -26,10 +26,10 @@ block movie_table
                     td
                         a.yt_link(yt_id= movie.yt_id, href='#') #{movie.name}
                     td
-                        a(href='http://www.imdb.com/title/#{movie.imdb_id}/' target='_blank')
+                        a(href="http://www.imdb.com/title/" + movie.imdb_id + "/" target='_blank')
                             img(src='/public/images/imdb_sm.png' width=30 height=14 border=0)
                     td
-                        a(href='http://www.boxofficemojo.com/movies/?id=#{movie.bom_id}' target='_blank')
+                        a(href="http://www.boxofficemojo.com/title/" + movie.imdb_id + "/" target='_blank')
                             img(src='/public/images/bom_sm.png' width=30 height=14 border=0)
                     if found == true
                         if winner_info.hasOwnProperty(movie._id)
@@ -40,9 +40,12 @@ block movie_table
                             else
                                 td redacted
                                 td redacted
+                                td redacted
                         else
                             td
                                 i None
+                            td
+                                i N/A
                             td
                                 i N/A
                     td #{prettyDate(movie.release_date)}
